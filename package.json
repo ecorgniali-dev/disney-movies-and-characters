@@ -2,10 +2,15 @@
   "name": "api-rest-mundo-disney",
   "version": "1.0.0",
   "description": "API para explorar el mundo de Disney, mediante la cual se puede conocer personajes y peliculas donde participaron.",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
+    "start": "node src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Corgniali Eduardo",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.2",
+    "sequelize": "^6.12.0"
+  }
 }
