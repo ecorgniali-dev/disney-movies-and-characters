@@ -1,15 +1,31 @@
 const Character = require('../models/character.model');
 const Movie = require('../models/movie.model');
+const Genre = require('../models/genre.model');
 const { Op } = require('sequelize');
 
 class CharacterController {
 
     async getAll() {
-        return await Character.findAll();
+        return await Character.findAll({
+            attributes: ['id', 'imageUrl', 'name']
+        });
     }
 
     async getById(id) {
-        const character = await Character.findByPk(id, { include: [Movie] });
+        const character = await Character.findByPk(
+            id,
+            {
+                include: [{
+                    model: Movie,
+                    through: {
+                        attributes: []
+                    },
+                    include: [{
+                        model: Genre
+                    }]
+                }]
+            }
+        );
         if (character === null) return `Id: ${id} Not found!`;
         return character;
     }
