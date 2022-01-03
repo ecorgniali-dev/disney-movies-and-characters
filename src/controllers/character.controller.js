@@ -1,5 +1,6 @@
 const Character = require('../models/character.model');
 const Movie = require('../models/movie.model');
+const { Op } = require('sequelize');
 
 class CharacterController {
 
@@ -42,6 +43,21 @@ class CharacterController {
                 id: id
             }
         });
+    }
+
+    async searchCharacter(query) {
+        const { name = '', age = '', weight = '', movies = '' } = query;
+        return await Character.findAll({
+            where: {
+                [Op.or]: [
+                    { name: name },
+                    { age: age },
+                    { weight: weight },
+                    { '$movies.characters_has_movies.movieId$': movies }
+                ]
+            },
+            include: [Movie]
+        })
     }
 
 }

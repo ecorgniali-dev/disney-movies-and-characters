@@ -1,10 +1,13 @@
 const { Router } = require('express');
 const router = Router();
-const controller = require('../controllers/character.controller.js');
+const controller = require('../controllers/character.controller');
 
-// getAll characters
+// getAll and search characters
 router.get('/', async (req, res) => {
     try {
+        if(Object.keys(req.query).length) { 
+            return res.json(await controller.searchCharacter(req.query));
+        }
         res.json(await controller.getAll());
     } catch (error) {
         console.log(error);
