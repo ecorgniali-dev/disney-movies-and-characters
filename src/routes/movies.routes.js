@@ -2,9 +2,12 @@ const { Router } = require('express');
 const router = Router();
 const controller = require('../controllers/movie.controller');
 
-// getAll movies
+// getAll and search movies
 router.get('/', async (req, res) => {
     try {
+        if(Object.keys(req.query).length) { 
+            return res.json(await controller.searchMovie(req.query));
+        }
         res.json(await controller.getAll());
     } catch (error) {
         console.log(error);

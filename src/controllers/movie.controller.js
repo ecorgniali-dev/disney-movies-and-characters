@@ -1,15 +1,40 @@
 const Movie = require('../models/movie.model');
 const Genre = require('../models/genre.model');
 const Character = require('../models/character.model');
+const { Op } = require('sequelize');
 
 class MovieController {
 
     async getAll() {
-        return await Movie.findAll();
+        return await Movie.findAll({
+            attributes: {
+                exclude: ['score', 'genres_id']
+            }
+        });
     }
 
     async getById(id) {
-        const movie = await Movie.findByPk(id, { include: [Genre, Character] });
+        const movie = await Movie.findByPk(
+            id,
+            {
+                attributes: {
+                    exclude: ['genres_id']
+                },
+                include: [
+                    {
+                        model: Genre,
+                        attributes: ['name']
+                    },
+                    {
+                        model: Character,
+                        attributes: ['imageUrl', 'name'],
+                        through: {
+                            attributes: []
+                        }
+                    }
+                ]
+            }
+        );
         if (movie === null) return `Id: ${id} Not found!`;
         return movie;
     }
@@ -43,6 +68,26 @@ class MovieController {
                 id: id
             }
         });
+    }
+
+    async searchMovie(query) {
+        const { name = null, genre = null, order = 'DESC'} = query;
+        return await Movie.findAll({
+            where: {
+                [Op.or]: [
+                    {
+                        title: {
+                            [Op.like]: `%${name}%`
+                        }
+                    },
+                    { genres_id: genre },
+                ]
+            },
+            order: [
+                ['creation_date', order]
+            ],
+            include: [Genre]
+        })
     }
 
 }
