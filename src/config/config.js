@@ -11,4 +11,5 @@ module.exports = {
     },
     ACCESS_TOKEN_SECRET: process.env.ACCESS_TOKEN_SECRET,
     TOKEN_EXPIRATION_TIME: process.env.TOKEN_EXPIRATION_TIME || '10m',
+    SENDGRID_API_KEY: process.env.SENDGRID_API_KEY
 }

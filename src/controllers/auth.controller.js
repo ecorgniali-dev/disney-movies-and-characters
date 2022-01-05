@@ -2,6 +2,7 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const User = require('../models/user.model');
 const { isValidPassword, generateToken, createHash } = require('../helpers/helpers');
+const { sendEmail } = require('../helpers/sendGrid')
 
 
 // LocalStrategy "login"
@@ -50,8 +51,10 @@ passport.use('register', new LocalStrategy({
             User.create({
                 username: username,
                 password: createHash(password),
+                email: req.body.email
             })
                 .then(user => {
+                    sendEmail(user.username, user.email);
                     return done(null, user);
                 })
                 .catch(err => {
