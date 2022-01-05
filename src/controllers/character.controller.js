@@ -17,12 +17,10 @@ class CharacterController {
             {
                 include: [{
                     model: Movie,
+                    attributes: ['id', 'imageUrl', 'title'],
                     through: {
                         attributes: []
-                    },
-                    include: [{
-                        model: Genre
-                    }]
+                    }
                 }]
             }
         );
