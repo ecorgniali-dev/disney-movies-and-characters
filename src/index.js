@@ -1,11 +1,16 @@
 const express = require('express');
 const app = express();
+const passport = require('passport');
 const sequelize = require('./database/db.connection');
 require('./models/associations');
 
 const morgan = require('morgan');
 const { PORT } = require('./config/config');
-const webRouter= require('./routes/web.routes');
+
+const checkAuthentication = require('./middlewares/checkAuthentication');
+
+const authRouter = require('./routes/auth.routes');
+const webRouter = require('./routes/web.routes');
 const charactersRouter = require('./routes/characters.routes');
 const genresRouter = require('./routes/genres.routes');
 const moviesRouter = require('./routes/movies.routes');
@@ -13,13 +18,17 @@ const moviesRouter = require('./routes/movies.routes');
 // miidlewares
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(passport.initialize());
 app.use(morgan('dev'));
 
 // Routes
+app.use('/auth', authRouter)
 app.use(webRouter);
-app.use('/characters', charactersRouter);
-app.use('/genres', genresRouter);
-app.use('/movies', moviesRouter);
+app.use('/characters', checkAuthentication, charactersRouter);
+app.use('/genres', checkAuthentication, genresRouter);
+app.use('/movies', checkAuthentication, moviesRouter);
+
+
 
 // run server express
 app.listen(PORT, async () => {

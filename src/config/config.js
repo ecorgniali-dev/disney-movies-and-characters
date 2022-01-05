@@ -8,5 +8,7 @@ module.exports = {
         DB_PASS: process.env.DB_PASS,
         DB_HOST: process.env.DB_HOST,
         DB_PORT: process.env.DB_PORT
-    }
+    },
+    ACCESS_TOKEN_SECRET: process.env.ACCESS_TOKEN_SECRET,
+    TOKEN_EXPIRATION_TIME: process.env.TOKEN_EXPIRATION_TIME || '10m',
 }
