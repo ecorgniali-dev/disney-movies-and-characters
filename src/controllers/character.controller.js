@@ -45,9 +45,7 @@ class CharacterController {
         });
         if (character === null) return `Id: ${id} Not found!`;
         const result = await character.update(data);
-        if (data.movies_id.length) {
-            result.setMovies(data.movies_id);
-        }
+        result.setMovies(data.movies_id);
         return result;
     }
 
@@ -70,7 +68,14 @@ class CharacterController {
                     { '$movies.characters_has_movies.movieId$': movies }
                 ]
             },
-            include: [Movie]
+            include: [{ 
+                model: Movie,
+                attributes: ['id', 'imageUrl', 'title'],
+                through: {
+                    attributes: []
+                }
+            }]
+
         })
     }
 

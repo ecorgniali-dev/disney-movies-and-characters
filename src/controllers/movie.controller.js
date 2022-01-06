@@ -56,9 +56,7 @@ class MovieController {
         })
         if (movie === null) return `Id: ${id} Not found!`;
         const result = await movie.update(data);
-        if (data.characters_id.length) {
-            result.setCharacters(data.characters_id)
-        }
+        result.setCharacters(data.characters_id)
         return result;
     }
 
@@ -71,7 +69,7 @@ class MovieController {
     }
 
     async searchMovie(query) {
-        const { name = null, genre = null, order = 'DESC'} = query;
+        const { name = null, genre = null, order = 'DESC' } = query;
         return await Movie.findAll({
             where: {
                 [Op.or]: [
