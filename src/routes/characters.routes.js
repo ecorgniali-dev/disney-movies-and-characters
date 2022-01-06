@@ -7,6 +7,7 @@ const controller = require('../controllers/character.controller');
  * @swagger
  * tags:
  *   name: Characters
+ *   description: Endpoints para manejar toda la información de los personajes disney
  */
 /**
  * @openapi
@@ -35,6 +36,74 @@ const controller = require('../controllers/character.controller');
  *                 type: string
  *                 descripcion: Nombre del personaje
  *                 example: Buzz Lightyear
+ * 
+ * /characters?name=nombre&age=edad&movies=idMovie:
+ *   get:
+ *     summary: 'Buscar una personaje por su nombre, edad o peliculas donde participo'
+ *     description: Buscar una personaje por su nombre, edad o peliculas donde participo
+ *     tags: [Characters]
+ *     parameters:
+ *       - in: query
+ *         name: name
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: age
+ *         schema:
+ *           type: integer
+ *       - in: query
+ *         name: movies
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: operación exitosa
+ *         schema:
+ *           type: array
+ *           items: 
+ *             type: object
+ *             properties:
+ *               id:
+ *                 type: integer
+ *                 descripcion: id del personaje
+ *                 example: 1
+ *               imageUrl:
+ *                 type: string
+ *                 descripcion: Url de la foto del personaje
+ *                 example: http://image.com
+ *               name:
+ *                 type: string
+ *                 descripcion: Nombre del personaje
+ *                 example: Buzz Lightyear
+ *               age:
+ *                 type: integer
+ *                 descripcion: Edad del personaje
+ *                 example: 25
+ *               weight:
+ *                 type: number
+ *                 descripcion: Peso del personaje
+ *                 example: 25.8
+ *               history:
+ *                 type: string
+ *                 descripcion: Breve historia del personaje
+ *                 example: En las películas Buzz es un juguete con forma de guerrero espacial, el cual llega hasta las manos de Andy, un niño con una gran colección de juguetes. En casa de Andy conocerá al resto de juguetes como son Woody, el Sr. Patata o Rex, entre otros.
+ *               movies:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *                   properties:
+ *                     id:
+ *                       type: integer
+ *                       descripcion: Id de la pelicula o serie relacionada al personaje
+ *                       example: 1
+ *                     imageUrl:
+ *                       type: string
+ *                       descripcion: Url de la foto de la pelicula o serie
+ *                       example: http://image.com
+ *                     title:
+ *                       type: string
+ *                       descripcion: Título de la pelicula o serie
+ *                       example: Toy Story
  */
 router.get('/', async (req, res) => {
     try {
